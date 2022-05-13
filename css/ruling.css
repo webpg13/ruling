@@ -1,0 +1,24 @@
+.col{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  /* flex-direction: column; */
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.air-pressure{
+  width: 170px;
+  height: 40px;
+  transform: rotate(270deg);
+  margin-top: 100px;
+  background-image: /* repeating-linear-gradient(to right, #000000 0, #000000 2px, transparent 0, transparent 64px), */
+  repeating-linear-gradient(to right, #000000 0, #000000 1px, transparent 0, transparent 32px),
+  repeating-linear-gradient(to right, #000000 0, #000000 1px, transparent 0, transparent 16px);
+  background-size: 100% 12px, 100% 6px, 100% 4px;
+  background-repeat: no-repeat;
+  background-position: 1px 100%, 1px 100%, 1px 100%;
+  /* border-bottom: 1px solid #000000; */
+  border: 1px solid #000000;
+}
