@@ -108,7 +108,7 @@ $(function () {
           axisLine: axisLine,
           // 指针值
           data: [{
-            value: 20
+            value: gauges.Rpm
           }],
           radius: '100%', // 控制仪表盘的大小
           detail: {
@@ -158,7 +158,7 @@ $(function () {
           axisLine: axisLine,
           // 指针值
           data: [{
-            value: 111
+            value: gauges.Torque
           }],
           radius: '100%', // 控制仪表盘的大小
           detail: {
@@ -204,7 +204,7 @@ $(function () {
           axisLine: axisLine,
           // 指针值
           data: [{
-            value: 55
+            value: gauges.Power
           }],
           radius: '100%', // 控制仪表盘的大小
           detail: {
@@ -250,7 +250,7 @@ $(function () {
           axisLine: axisLine,
           // 指针值
           data: [{
-            value: 40
+            value: gauges.Bsfc
           }],
           radius: '100%', // 控制仪表盘的大小
           detail: {
@@ -296,7 +296,7 @@ $(function () {
           axisLine: axisLine,
           // 指针值
           data: [{
-            value: 20
+            value: gauges.B
           }],
           radius: '100%', // 控制仪表盘的大小
           detail: {
@@ -309,9 +309,22 @@ $(function () {
     oilConsumption.setOption(oilConsumptionOption);
   }
 
-  revolutionRender();
-  torqueRender();
-  powerRender();
-  fuelConsumptionRateRender();
-  oilConsumptionRender();
+  var gauges = {};
+  $.ajax({
+    type: "get",
+    url: "../data.json",
+    dataType: "json",
+    success: function(res){
+      console.log(res);
+      gauges = res.gauges;
+      revolutionRender();
+      torqueRender();
+      powerRender();
+      fuelConsumptionRateRender();
+      oilConsumptionRender();
+    },
+    error: function(err){
+      console.log("err", err)
+    }
+  })
 })
