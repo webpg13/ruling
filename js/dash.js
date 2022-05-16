@@ -48,11 +48,11 @@ $(function () {
   };
   var axisLabel = {
     color: 'auto',
-    distance: 10, // 设置刻度数值离内圆的距离
+    distance: 16, // 设置刻度数值离内圆的距离
     fontSize: 12
   }
   var axisTick = {
-    distance: 20, // 设置刻度离内圆的距离
+    distance: 0, // 设置刻度离内圆的距离
     length: 18, // 设置刻度长度
     lineStyle: {
       color: 'auto',
@@ -60,11 +60,11 @@ $(function () {
     }
   }
   var splitLine = {
-    distance: 20, // 设置刻度离内圆的距离
+    distance: 0, // 设置刻度离内圆的距离
     length: 25, // 设置刻度长度
     lineStyle: {
       color: 'auto',
-      width: 3 // 设置刻度宽度
+      width: 2 // 设置刻度宽度
     }
   }
   var axisLine = {
@@ -316,6 +316,7 @@ $(function () {
     dataType: "json",
     success: function(res){
       console.log(res);
+      $("#inner").html(JSON.stringify(res))
       gauges = res.gauges;
       revolutionRender();
       torqueRender();

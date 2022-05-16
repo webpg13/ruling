@@ -1,241 +1,446 @@
 $(function () {
+  var label = {
+    normal: {
+      show: true,
+      lineHeight: 14,
+      formatter: '{c}',
+      position: 'top',
+      textStyle: {
+        color: 'auto',
+        fontSize: 13
+      }
+
+    }
+  }
+
+  var tooltip = {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'cross',
+      crossStyle: {
+        color: '#999'
+      }
+    }
+  }
+
+  var grid = {
+    top: 10,
+    bottom: 10,
+    width: "100%",
+    height: "90%"
+  }
+
+  var xAxis = {
+    type: 'category',
+    // prettier-ignore
+    data: [""],
+    axisLine: {
+      //y轴
+      show: false,
+    },
+    axisTick: {
+      show: false
+    }
+  }
+  var black = "rgba(0, 0, 0, 1)";
+  var gray = "rgba(220, 220, 220, 0.5)";
   function airPressureRender() {
     var airPressure = echarts.init($("#airPressure")[0]);
-    var TP_value = 60;
-    var kd = [];
-    var Gradient = [];
-    var leftColor = "";
-    var showValue = "";
-    var boxPosition = [65, 0];
-    var TP_txt = "";
-    // 刻度使用柱状图模拟，短设置1，长的设置3；构造一个数据
-    for (var i = 0, len = 100; i <= len; i++) {
-      /* if (i <= 0 || i >= 100) {
-        kd.push("-2");
-      } else {
-        if ((i - 10) % 20 === 0) {
-          kd.push("-2");
-        } else if ((i - 10) % 4 === 0) {
-          kd.push("-1");
-        } else {
-          kd.push("");
-        }
-      } */
-      if(i % 20 === 0){
-        kd.push("-2")
-      } else{
-        kd.push("");
-      }
-    }
-    console.log("kd",kd)
-    Gradient.push(
-      {
-        offset: 0,
-        color: "rgb(0, 76, 245)",
-      },
-      {
-        offset: 0.5,
-        color: "rgba(33, 120, 246,1)",
-      },
-      {
-        offset: 1,
-        color: "rgba(69, 174, 249,11)",
-      }
-    );
-    if (TP_value > 100) {
-      showValue = 100;
-    } else {
-      if (TP_value < -0) {
-        showValue = 0;
-      } else {
-        showValue = TP_value;
-      }
-    }
-    leftColor = Gradient[Gradient.length - 1].color;
-    // 因为柱状初始化为0，温度存在负值，所以加上负值60和空出距离10
+
     var airPressureOption = {
-      backgroundColor: "#000",
-      title: {
-        text: "温度计",
-        show: false,
-      },
-      yAxis: [
-        {
+      // 提示框
+      tooltip: tooltip,
+      grid: grid,
+      xAxis: xAxis,
+      yAxis: [{
+        type: 'value',
+        min: 50,
+        max: 150,
+        minInterval: 25,
+        splitNumber: 5,
+        position: 'left',
+        offset: -30,
+        axisLabel: {
+          formatter: '{value} '
+        },
+        axisTick: {
+          show: true
+        },
+        axisLine: {
+          //y轴
           show: true,
-          data: [],
-          min: 0,
-          max: 100,
-          axisLine: {
-            show: false,
-          },
+          lineStyle: {
+            color: black
+          }
         },
-        {
+        splitLine: {
+          //网格线
           show: false,
-          min: 0,
-          max: 100,
         },
-        {
-          type: "category",
-          data: ["", "", "", "", "", "", "", "", "", "", ""],
-          position: "right",
-          offset: -5,
-          axisLabel: {
-            fontSize: 10,
-            color: "white",
-          },
-          axisLine: {
-            show: false,
-          },
-          axisTick: {
-            show: false,
-          },
-        },
-      ],
-      xAxis: [
-        {
-          show: false,
-          min: -10,
-          max: 80,
-          data: [],
-        },
-        {
-          show: false,
-          min: -10,
-          max: 80,
-          data: [],
-        },
-        {
-          show: false,
-          min: -10,
-          max: 80,
-          data: [],
-        },
-        {
-          show: false,
-          min: -8,
-          max: 80,
-          splitLine: {
-            lineStyle: {
-              color: "rgba(56, 128, 138,1)",
-            },
-          },
-        },
-      ],
-      grid:{
-        left: "50%",
-        top: "8%",
-        width: "100%",
-        height: "85%"
-      },
+      }]
+      ,
       series: [
         {
-          name: "条",
-          type: "bar",
-          // 对应上面XAxis的第一个对)象配置
-          xAxisIndex: 0,
-          data: [
-            {
-              value: showValue,
-              label: {
-                normal: {
-                  show: true,
-                  position: "top",
-                  width: 10,
-                  height: 50,
-                  formatter: "{back| " + TP_value + " }",
-                  rich: {
-                    back: {
-                      align: "center",
-                      lineHeight: 50,
-                      fontSize: 12,
-                      color: leftColor,
-                    },
-                  },
-                },
-              },
-            },
-          ],
-          barWidth: 26,
-          itemStyle: {
-            normal: {
-              color: new echarts.graphic.LinearGradient(0, 1, 0, 0, Gradient),
-            },
-          },
-          z: 2,
-        },
-        {
-          name: "白框",
-          type: "bar",
-          animation: false,
-          xAxisIndex: 1,
-          barGap: "-100%",
-          data: [99],
-          barWidth: 26,
-          itemStyle: {
-            normal: {
-              color: "#000",
-              barBorderRadius: 0,
-            },
-          },
-          z: 1,
-        },
-        {
-          name: "外框",
-          type: "bar",
-          animation: false,
-          xAxisIndex: 2,
-          barGap: "-100%",
-          data: [100],
-          barWidth: 33,
-          itemStyle: {
-            normal: {
-              color: "rgba(56, 128, 138,1)",
-              barBorderRadius: 0,
-            },
-          },
-          z: 0,
-        },
-        {
-          name: "刻度",
-          type: "bar",
-          animation: false,
-          yAxisIndex: 0,
-          xAxisIndex: 3,
-          label: {
-            normal: {
-              show: true,
-              position: "left",
-              distance: 15,
-              color: "rgba(56, 128, 138,1)",
-              fontSize: 12,
-              formatter: function (params) {
-                console.log(params)
-                if (params.dataIndex % 10 === 0) {
-                  return params.dataIndex;
-                } else if (params.dataIndex == 100) {
-                  return params.dataIndex;
-                } else {
-                  return "";
-                }
-              },
-            },
-          },
-          barGap: "-40%",
-          data: kd,
-          barWidth: 1,
-          itemStyle: {
-            normal: {
-              color: "rgba(56, 128, 138,1)",
-              //  barBorderRadius: 120,
-            },
-          },
-          z: 0,
-        },
-      ],
-    };
+          type: 'bar',
+          name: '大气压力',
+          data: [verticals.Atm],
+          roundCap: true,
 
+          itemStyle: {
+            // 柱条的渐变颜色
+            normal: {
+              borderRadius: [0, 0, 50, 50],
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                offset: 0,
+                color: 'rgba(219,15,15,0.82)' // 0% 处的颜色
+              }, {
+                offset: 1,
+                color: 'rgba(255,0,26,1)' // 100% 处的颜色
+              }], false),
+            }
+          },
+          // barGap 被设为 '20%'，这意味着每个类目（比如 A）下的两个柱子之间的距离，
+          // 相对于柱条宽度的百分比。而 barCategoryGap 是 '40%'，
+          // 意味着柱条每侧空余的距离，相对于柱条宽度的百分比。
+          // barGap: '10%',
+          barCategoryGap: '70%',
+
+          // 为柱条添加背景色
+          // 用 showBackground 开启，并且可以通过 backgroundStyle 配置。
+          showBackground: true,
+          backgroundStyle: {
+            color: gray,
+            borderRadius: [50, 50, 50, 50],
+          },
+          label: label
+        },
+
+      ]
+    };
     airPressure.setOption(airPressureOption);
   }
 
-  airPressureRender()
+  function airHumidity() {
+    var airHumidity = echarts.init($("#airHumidity")[0]);
+
+    var airHumidityOption = {
+      // 提示框
+      tooltip: tooltip,
+      grid: grid,
+      xAxis: xAxis,
+      yAxis: [{
+        type: 'value',
+        min: 0,
+        max: 100,
+        minInterval: 25,
+        splitNumber: 5,
+        position: 'left',
+        offset: -30,
+        axisLabel: {
+          formatter: '{value} '
+        },
+        axisTick: {
+          show: true
+        },
+        axisLine: {
+          //y轴
+          show: true,
+          lineStyle: {
+            color: black
+          }
+        },
+        splitLine: {
+          //网格线
+          show: false,
+        },
+      }],
+      series: [
+        {
+          type: 'bar',
+          name: '大气湿度',
+          data: [verticals.AirRh],
+          roundCap: true,
+
+          itemStyle: {
+            // 柱条的渐变颜色
+            normal: {
+              borderRadius: [0, 0, 50, 50],
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                offset: 0,
+                color: 'rgba(34,193,195,1)' // 0% 处的颜色
+              }, {
+                offset: 1,
+                color: 'rgba(45,253,79,1)' // 100% 处的颜色
+              }], false),
+            }
+          },
+          // barGap 被设为 '20%'，这意味着每个类目（比如 A）下的两个柱子之间的距离，
+          // 相对于柱条宽度的百分比。而 barCategoryGap 是 '40%'，
+          // 意味着柱条每侧空余的距离，相对于柱条宽度的百分比。
+          // barGap: '10%',
+          barCategoryGap: '70%',
+
+          // 为柱条添加背景色
+          // 用 showBackground 开启，并且可以通过 backgroundStyle 配置。
+          showBackground: true,
+          backgroundStyle: {
+            color: gray,
+            borderRadius: [50, 50, 50, 50],
+          },
+          label: label
+        },
+
+      ]
+    };
+    airHumidity.setOption(airHumidityOption);
+  }
+
+
+  function airTemperature() {
+    var airTemperature = echarts.init($("#airTemperature")[0]);
+
+    var airTemperatureOption = {
+      // 提示框
+      tooltip: tooltip,
+      grid: grid,
+      xAxis: xAxis,
+      yAxis: [{
+        type: 'value',
+        min: -10,
+        max: 50,
+        minInterval: 25,
+        splitNumber: 5,
+        position: 'left',
+        offset: -30,
+        axisLabel: {
+          formatter: '{value} '
+        },
+        axisTick: {
+          show: true
+        },
+        axisLine: {
+          //y轴
+          show: true,
+          lineStyle: {
+            color: black
+          }
+        },
+        splitLine: {
+          //网格线
+          show: false,
+        },
+      }],
+      series: [
+        {
+          type: 'bar',
+          name: '大气温度',
+          data: [verticals.AirTemp],
+          roundCap: true,
+
+          itemStyle: {
+            // 柱条的渐变颜色
+            normal: {
+              borderRadius: [0, 0, 50, 50],
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                offset: 0,
+                color: 'rgba(131,58,180,1)' // 0% 处的颜色
+              }, {
+                offset: .5,
+                color: 'rgba(253,29,29,1)' // 100% 处的颜色
+              }, {
+                offset: 1,
+                color: 'rgba(252,176,69,1)' // 100% 处的颜色
+              }], false),
+            }
+          },
+          // barGap 被设为 '20%'，这意味着每个类目（比如 A）下的两个柱子之间的距离，
+          // 相对于柱条宽度的百分比。而 barCategoryGap 是 '40%'，
+          // 意味着柱条每侧空余的距离，相对于柱条宽度的百分比。
+          // barGap: '10%',
+          barCategoryGap: '70%',
+
+          // 为柱条添加背景色
+          // 用 showBackground 开启，并且可以通过 backgroundStyle 配置。
+          showBackground: true,
+          backgroundStyle: {
+            color: gray,
+            borderRadius: [50, 50, 50, 50],
+          },
+          label: label
+        },
+
+      ]
+    };
+    airTemperature.setOption(airTemperatureOption);
+  }
+
+  function waterTemperature() {
+    var waterTemperature = echarts.init($("#waterTemperature")[0]);
+
+    var waterTemperatureOption = {
+      // 提示框
+      tooltip: tooltip,
+      grid: grid,
+      xAxis: xAxis,
+      yAxis: [{
+        type: 'value',
+        min: 30,
+        max: 150,
+        minInterval: 25,
+        splitNumber: 5,
+        position: 'left',
+        offset: -30,
+        axisLabel: {
+          formatter: '{value} '
+        },
+        axisTick: {
+          show: true
+        },
+        axisLine: {
+          //y轴
+          show: true,
+          lineStyle: {
+            color: black
+          }
+        },
+        splitLine: {
+          //网格线
+          show: false,
+        },
+      }],
+      series: [
+        {
+          type: 'bar',
+          name: '冷却水温',
+          data: [verticals.Ect],
+          roundCap: true,
+
+          itemStyle: {
+            // 柱条的渐变颜色
+            normal: {
+              borderRadius: [0, 0, 50, 50],
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                offset: 0,
+                color: 'rgba(7,174,249,1)' // 0% 处的颜色
+              }, {
+                offset: 1,
+                color: 'rgba(4,0,255,1)' // 100% 处的颜色
+              }], false),
+            }
+          },
+          // barGap 被设为 '20%'，这意味着每个类目（比如 A）下的两个柱子之间的距离，
+          // 相对于柱条宽度的百分比。而 barCategoryGap 是 '40%'，
+          // 意味着柱条每侧空余的距离，相对于柱条宽度的百分比。
+          // barGap: '10%',
+          barCategoryGap: '70%',
+
+          // 为柱条添加背景色
+          // 用 showBackground 开启，并且可以通过 backgroundStyle 配置。
+          showBackground: true,
+          backgroundStyle: {
+            color: gray,
+            borderRadius: [50, 50, 50, 50],
+          },
+          label: label
+        },
+
+      ]
+    };
+    waterTemperature.setOption(waterTemperatureOption);
+  }
+  function oilPressure() {
+    var oilPressure = echarts.init($("#oilPressure")[0]);
+
+    var oilPressureOption = {
+      // 提示框
+      tooltip: tooltip,
+      grid: grid,
+      xAxis: xAxis,
+      yAxis: [{
+        type: 'value',
+        min: 0,
+        max: 300,
+        minInterval: 25,
+        splitNumber: 5,
+        position: 'left',
+        offset: -30,
+        axisLabel: {
+          formatter: '{value} '
+        },
+        axisTick: {
+          show: true
+        },
+        axisLine: {
+          //y轴
+          show: true,
+          lineStyle: {
+            color: black
+          }
+        },
+        splitLine: {
+          //网格线
+          show: false,
+        },
+      }],
+      series: [
+        {
+          type: 'bar',
+          name: '机油压力',
+          data: [verticals.Eop],
+          roundCap: true,
+
+          itemStyle: {
+            // 柱条的渐变颜色
+            normal: {
+              borderRadius: [0, 0, 50, 50],
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                offset: 0,
+                color: 'rgba(249,128,7,1)' // 0% 处的颜色
+              }, {
+                offset: 1,
+                color: 'rgba(255,192,0,1)' // 100% 处的颜色
+              }], false),
+            }
+          },
+          // barGap 被设为 '20%'，这意味着每个类目（比如 A）下的两个柱子之间的距离，
+          // 相对于柱条宽度的百分比。而 barCategoryGap 是 '40%'，
+          // 意味着柱条每侧空余的距离，相对于柱条宽度的百分比。
+          // barGap: '10%',
+          barCategoryGap: '70%',
+
+          // 为柱条添加背景色
+          // 用 showBackground 开启，并且可以通过 backgroundStyle 配置。
+          showBackground: true,
+          backgroundStyle: {
+            color: gray,
+            borderRadius: [50, 50, 50, 50],
+          },
+          label: label
+        },
+
+      ]
+    };
+    oilPressure.setOption(oilPressureOption);
+  }
+  var verticals = {};
+  $.ajax({
+    type: "get",
+    url: "../data.json",
+    dataType: "json",
+    success: function (res) {
+      console.log(res);
+      $("#inner").html(JSON.stringify(res))
+      verticals = res.verticals;
+      airPressureRender()
+      airHumidity()
+      airTemperature()
+      waterTemperature()
+      oilPressure()
+    },
+    error: function (err) {
+      console.log("err", err)
+    }
+  })
+
+
 })
