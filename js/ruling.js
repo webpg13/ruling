@@ -83,6 +83,7 @@ $(function () {
         {
           type: 'bar',
           name: '大气压力',
+          // 柱状图数值
           data: [verticals.Atm],
           roundCap: true,
 
@@ -99,10 +100,6 @@ $(function () {
               }], false),
             }
           },
-          // barGap 被设为 '20%'，这意味着每个类目（比如 A）下的两个柱子之间的距离，
-          // 相对于柱条宽度的百分比。而 barCategoryGap 是 '40%'，
-          // 意味着柱条每侧空余的距离，相对于柱条宽度的百分比。
-          // barGap: '10%',
           barCategoryGap: '70%',
 
           // 为柱条添加背景色
@@ -158,6 +155,7 @@ $(function () {
         {
           type: 'bar',
           name: '大气湿度',
+          // 柱状图数值
           data: [verticals.AirRh],
           roundCap: true,
 
@@ -174,10 +172,6 @@ $(function () {
               }], false),
             }
           },
-          // barGap 被设为 '20%'，这意味着每个类目（比如 A）下的两个柱子之间的距离，
-          // 相对于柱条宽度的百分比。而 barCategoryGap 是 '40%'，
-          // 意味着柱条每侧空余的距离，相对于柱条宽度的百分比。
-          // barGap: '10%',
           barCategoryGap: '70%',
 
           // 为柱条添加背景色
@@ -195,7 +189,6 @@ $(function () {
     airHumidity.setOption(airHumidityOption);
   }
 
-
   function airTemperature() {
     var airTemperature = echarts.init($("#airTemperature")[0]);
 
@@ -206,9 +199,9 @@ $(function () {
       xAxis: xAxis,
       yAxis: [{
         type: 'value',
-        min: -10,
-        max: 50,
-        minInterval: 25,
+        min: 0,
+        max: 60,
+        minInterval: 5,
         splitNumber: 5,
         position: 'left',
         offset: -30,
@@ -234,6 +227,7 @@ $(function () {
         {
           type: 'bar',
           name: '大气温度',
+          // 柱状图数值
           data: [verticals.AirTemp],
           roundCap: true,
 
@@ -253,10 +247,6 @@ $(function () {
               }], false),
             }
           },
-          // barGap 被设为 '20%'，这意味着每个类目（比如 A）下的两个柱子之间的距离，
-          // 相对于柱条宽度的百分比。而 barCategoryGap 是 '40%'，
-          // 意味着柱条每侧空余的距离，相对于柱条宽度的百分比。
-          // barGap: '10%',
           barCategoryGap: '70%',
 
           // 为柱条添加背景色
@@ -312,6 +302,7 @@ $(function () {
         {
           type: 'bar',
           name: '冷却水温',
+          // 柱状图数值
           data: [verticals.Ect],
           roundCap: true,
 
@@ -328,10 +319,6 @@ $(function () {
               }], false),
             }
           },
-          // barGap 被设为 '20%'，这意味着每个类目（比如 A）下的两个柱子之间的距离，
-          // 相对于柱条宽度的百分比。而 barCategoryGap 是 '40%'，
-          // 意味着柱条每侧空余的距离，相对于柱条宽度的百分比。
-          // barGap: '10%',
           barCategoryGap: '70%',
 
           // 为柱条添加背景色
@@ -348,6 +335,7 @@ $(function () {
     };
     waterTemperature.setOption(waterTemperatureOption);
   }
+
   function oilPressure() {
     var oilPressure = echarts.init($("#oilPressure")[0]);
 
@@ -386,6 +374,7 @@ $(function () {
         {
           type: 'bar',
           name: '机油压力',
+          // 柱状图数值
           data: [verticals.Eop],
           roundCap: true,
 
@@ -402,10 +391,6 @@ $(function () {
               }], false),
             }
           },
-          // barGap 被设为 '20%'，这意味着每个类目（比如 A）下的两个柱子之间的距离，
-          // 相对于柱条宽度的百分比。而 barCategoryGap 是 '40%'，
-          // 意味着柱条每侧空余的距离，相对于柱条宽度的百分比。
-          // barGap: '10%',
           barCategoryGap: '70%',
 
           // 为柱条添加背景色
@@ -422,6 +407,14 @@ $(function () {
     };
     oilPressure.setOption(oilPressureOption);
   }
+
+  function reanderData(data){
+    $("#AtmValue1").html(data.Atm)
+    $("#AirRhValue1").html(data.AirRh)
+    $("#AirTempValue1").html(data.AirTemp)
+    $("#EctValue1").html(data.Ect)
+  }
+
   var verticals = {};
   $.ajax({
     type: "get",
@@ -436,6 +429,7 @@ $(function () {
       airTemperature()
       waterTemperature()
       oilPressure()
+      reanderData(verticals)
     },
     error: function (err) {
       console.log("err", err)

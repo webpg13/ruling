@@ -309,6 +309,14 @@ $(function () {
     oilConsumption.setOption(oilConsumptionOption);
   }
 
+  function reanderData(data){
+    $("#RpmValue1").html(data.Rpm)
+    $("#TorqueValue1").html(data.Torque)
+    $("#PowerValue1").html(data.Power)
+    $("#BsfcValue1").html(data.Bsfc)
+    $("#BValue1").html(data.B)
+  }
+
   var gauges = {};
   $.ajax({
     type: "get",
@@ -323,6 +331,7 @@ $(function () {
       powerRender();
       fuelConsumptionRateRender();
       oilConsumptionRender();
+      reanderData(gauges);
     },
     error: function(err){
       console.log("err", err)

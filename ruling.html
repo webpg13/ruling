@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="./js/echarts.min.js"></script>
   <script src="./js/jquery.min.js"></script>
-  <link rel="stylesheet" href="./css/ruling.css">
+  <link rel="stylesheet" href="./css/common.css">
   <title>刻度尺</title>
 </head>
 
@@ -21,7 +21,20 @@
     <div id='waterTemperature' style="width: 120px;height:170px;"></div>
     <div id='oilPressure' style="width: 120px;height:170px;"></div>
   </div>
-  <div id="inner" style="margin: 50px 0 0;"></div>
+  <div id="inner"></div>
+  <hr>
+  <div class="data_list">
+    <!-- 大气压力 -->
+    <div id="AtmValue1"></div>
+    <!-- 大气湿度 -->
+    <div id="AirRhValue1"></div>
+    <!-- 大气温度 -->
+    <div id="AirTempValue1"></div>
+    <!-- 冷却水温 -->
+    <div id="EctValue1"></div>
+    <div id="EctValue2"></div>
+  </div>
+  <hr>
 
   <script src="./js/ruling.js"></script>
 </body>
