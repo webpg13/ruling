@@ -413,6 +413,7 @@ $(function () {
     $("#AirRhValue1").html(data.AirRh)
     $("#AirTempValue1").html(data.AirTemp)
     $("#EctValue1").html(data.Ect)
+    $("#EopValue1").html(data.Ect)
   }
 
   var verticals = {};
