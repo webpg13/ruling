@@ -86,7 +86,7 @@ $(function () {
       title: [{
         text: '转速(rpm)',
         left: 'center',
-        top: '80%',
+        top: '90%',
         textStyle: textStyle
       }],
       series: [
@@ -132,7 +132,7 @@ $(function () {
       title: [{
         text: '扭矩(N·m)',
         left: 'center',
-        top: '80%',
+        top: '90%',
         textStyle: {
           color: '#281713',
           fontSize: 13,
@@ -182,7 +182,7 @@ $(function () {
       title: [{
         text: '功率(kW)',
         left: 'center',
-        top: '80%',
+        top: '90%',
         textStyle: textStyle
       }],
       series: [
@@ -228,7 +228,7 @@ $(function () {
       title: [{
         text: '油耗率(g/kWh)',
         left: 'center',
-        top: '80%',
+        top: '90%',
         textStyle: textStyle
       }],
       series: [
@@ -274,7 +274,7 @@ $(function () {
       title: [{
         text: '油耗量(kg/h)',
         left: 'center',
-        top: '80%',
+        top: '90%',
         textStyle: textStyle
       }],
       series: [
@@ -309,32 +309,44 @@ $(function () {
     oilConsumption.setOption(oilConsumptionOption);
   }
 
-  function reanderData(data){
+  function reanderData(data) {
     $("#RpmValue1").html(data.Rpm)
+    $("#RpmValue2").html(data.Rpm)
     $("#TorqueValue1").html(data.Torque)
+    $("#TorqueValue2").html(data.Torque)
     $("#PowerValue1").html(data.Power)
+    $("#PowerValue2").html(data.Power)
     $("#BsfcValue1").html(data.Bsfc)
+    $("#BsfcValue2").html(data.Bsfc)
     $("#BValue1").html(data.B)
+    $("#BValue2").html(data.B)
   }
 
   var gauges = {};
-  $.ajax({
-    type: "get",
-    url: "../data.json",
-    dataType: "json",
-    success: function(res){
-      console.log(res);
-      $("#inner").html(JSON.stringify(res))
-      gauges = res.gauges;
-      revolutionRender();
-      torqueRender();
-      powerRender();
-      fuelConsumptionRateRender();
-      oilConsumptionRender();
-      reanderData(gauges);
-    },
-    error: function(err){
-      console.log("err", err)
-    }
-  })
+  function getData() {
+    $.ajax({
+      type: "get",
+      url: "https://mock.mengxuegu.com/mock/62834ec59f8dd47f95c78609/data/",
+      dataType: "json",
+      success: function (res) {
+        console.log(res);
+        $("#inner").html(JSON.stringify(res))
+        gauges = res.gauges;
+        revolutionRender();
+        torqueRender();
+        powerRender();
+        fuelConsumptionRateRender();
+        oilConsumptionRender();
+        reanderData(gauges);
+      },
+      error: function (err) {
+        console.log("err", err)
+      }
+    })
+  }
+  getData();
+
+  setInterval(() => {
+    getData()
+  }, 2000)
 })

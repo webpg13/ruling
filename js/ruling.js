@@ -413,29 +413,39 @@ $(function () {
     $("#AirRhValue1").html(data.AirRh)
     $("#AirTempValue1").html(data.AirTemp)
     $("#EctValue1").html(data.Ect)
-    $("#EopValue1").html(data.Ect)
+    $("#EctValue2").html(data.Ect)
+    $("#EopValue1").html(data.Eop)
+    $("#EopValue2").html(data.Eop)
   }
 
   var verticals = {};
-  $.ajax({
-    type: "get",
-    url: "../data.json",
-    dataType: "json",
-    success: function (res) {
-      console.log(res);
-      $("#inner").html(JSON.stringify(res))
-      verticals = res.verticals;
-      airPressureRender()
-      airHumidity()
-      airTemperature()
-      waterTemperature()
-      oilPressure()
-      reanderData(verticals)
-    },
-    error: function (err) {
-      console.log("err", err)
-    }
-  })
+  
+  function getData(){
+    $.ajax({
+      type: "get",
+      url: "https://mock.mengxuegu.com/mock/62834ec59f8dd47f95c78609/data/",
+      dataType: "json",
+      success: function (res) {
+        console.log(res);
+        $("#inner").html(JSON.stringify(res))
+        verticals = res.verticals;
+        airPressureRender()
+        airHumidity()
+        airTemperature()
+        waterTemperature()
+        oilPressure()
+        reanderData(verticals)
+      },
+      error: function (err) {
+        console.log("err", err)
+      }
+    })
+  }
+  getData();
+
+  setInterval(()=>{
+    getData()
+  }, 2000)
 
 
 })
